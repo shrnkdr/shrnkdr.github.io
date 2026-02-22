@@ -4,7 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shiranuka Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
@@ -15,16 +19,33 @@
     header {
       background: #111;
       color: white;
-      padding: 60px 20px;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 16px 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     header h1 {
       margin: 0;
-      font-size: 2.5rem;
+      font-size: 2rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
     }
     header p {
-      margin-top: 10px;
+      margin: 4px 0 0;
       opacity: 0.8;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+    .header-spacer {
+      height: 80px;
     }
     section {
       max-width: 900px;
@@ -34,6 +55,14 @@
     h2 {
       border-bottom: 2px solid #ddd;
       padding-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h2 i {
+      color: #111;
+      width: 30px;
+      text-align: center;
     }
     .card {
       background: white;
@@ -41,6 +70,63 @@
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       margin-top: 20px;
+    }
+    .works-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .works-container .card {
+      margin-top: 0;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    /* カード全体の高さを幅基準で決定する
+       画像が 16/9 の比率 → カード全体はその2倍の高さ
+       カード幅を w とすると 画像高さ = w * 9/16、カード高さ = w * 9/8
+       aspect-ratio で表現: 16 / (9*2) = 16/18 = 8/9 */
+    .works-container .card {
+      aspect-ratio: 8 / 9;
+    }
+    .works-container .card .card-image {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+      background-color: #e0e0e0;
+      flex-shrink: 0;
+    }
+    .works-container .card .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 5%;
+      overflow: hidden;
+    }
+    .works-container .card .card-body h3 {
+      margin: 0 0 0.4em;
+      font-size: 5.4cqw;
+    }
+    .works-container .card .card-body p {
+      margin: 0;
+      font-size: 4cqw;
+      line-height: 1.6;
+    }
+    .works-container .card {
+      container-type: inline-size;
+    }
+    .works-container a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .works-container a:hover .card {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     }
     footer {
       text-align: center;
@@ -60,9 +146,10 @@
   <h1>しらぬか</h1>
   <p>iOS / Flutter Developer</p>
 </header>
+<div class="header-spacer"></div>
 
 <section>
-  <h2>About</h2>
+  <h2><i class="fas fa-user"></i>About</h2>
   <div class="card">
     <p>
       Flutterを中心にモバイルアプリ開発を行っています。
@@ -72,28 +159,35 @@
 </section>
 
 <section>
-  <h2>Works</h2>
-  <div class="card">
-    <h3>数寄数寄</h3>
-    <p>
-      CPUが入力したパスコードを解読するゲーム。<br>
-      App Storeにて公開中。
-    </p>
+  <h2><i class="fas fa-briefcase"></i>Works</h2>
+  <div class="works-container">
+    <div class="card">
+      <img class="card-image" src="sukisuki_screenshot.png" alt="数寄数寄 スクリーンショット" />
+      <div class="card-body">
+      <h3>数寄数寄</h3>
+      <p>
+        CPUが入力したパスコードを解読するゲーム。<br>
+        App Storeにて公開中。
+      </p>
+    </div>
+    </div>
+    <a href="https://apps.apple.com/jp/app/%E3%83%8B%E3%83%B3%E3%83%8B%E3%82%AF%E5%85%A5%E3%82%8C%E3%82%8B%E3%82%93%E3%81%8B/id6749322877">
+    <div class="card">
+      <img class="card-image" src="ninniku_screenshot.png" alt="ニンニク入れるんか？ スクリーンショット" />
+      <div class="card-body">
+      <h3>ニンニク入れるんか？</h3>
+      <p>
+        ラーメン二郎のコールを生成するiOSアプリ。<br>
+        App Storeにて公開中。
+      </p>
+    </div>
+    </div>
+    </a>
   </div>
 </section>
 
 <section>
-  <h2>Works</h2>
-  <div class="card">
-    <h3>ニンニク入れるんか？</h3>
-    <p>
-      ラーメン二郎のコールを生成するiOSアプリ。<br>
-      App Storeにて公開中。
-    </p>
-  </div>
-</section>
-<section>
-  <h2>Skills</h2>
+  <h2><i class="fas fa-code"></i>Skills</h2>
   <div class="card">
     <p>
       Flutter / Dart / Firebase / iOS / Git / Xcode
@@ -102,7 +196,7 @@
 </section>
 
 <section>
-  <h2>Support</h2>
+  <h2><i class="fas fa-headset"></i>Support</h2>
   <div class="card">
     <p>
       アプリに関するお問い合わせは下記メールアドレスまでご連絡ください。<br><br>
