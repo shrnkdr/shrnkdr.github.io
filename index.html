@@ -19,9 +19,9 @@
     }
     .bg-fixed {
       position: fixed;
-      top: 80px;        /* ヘッダーの高さ分だけ下から開始 */
-      right: 0;
-      bottom: 0;        /* ウインドウ下底に合わせる */
+      top: 90px;        /* ヘッダーの高さ分だけ下から開始 */
+      right: 5%;
+      bottom: 10%;        /* ウインドウ下底に合わせる */
       left: 0;
       z-index: -1;
       overflow: hidden; /* はみ出しを完全に防ぐ */
@@ -127,12 +127,20 @@
     }
     .works-container .card .card-body h3 {
       margin: 0 0 0.4em;
-      font-size: 5.4cqw;
+      font-size: clamp(0.95rem, 5.4cqw, 1.4rem);
     }
     .works-container .card .card-body p {
       margin: 0;
-      font-size: 4cqw;
+      font-size: clamp(0.7rem, 4cqw, 1.1rem);
       line-height: 1.6;
+    }
+    @media (max-width: 480px) {
+      .works-container {
+        grid-template-columns: 1fr;
+      }
+      .works-container .card {
+        aspect-ratio: 8 / 9;
+      }
     }
     .works-container .card {
       container-type: inline-size;
