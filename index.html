@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shiranuka Portfolio</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap" />
   <style>
     * {
       box-sizing: border-box;
@@ -16,14 +17,33 @@
       color: #333;
       line-height: 1.6;
     }
+    .bg-fixed {
+      position: fixed;
+      top: 80px;        /* ヘッダーの高さ分だけ下から開始 */
+      right: 0;
+      bottom: 0;        /* ウインドウ下底に合わせる */
+      left: 0;
+      z-index: -1;
+      overflow: hidden; /* はみ出しを完全に防ぐ */
+    }
+    .bg-fixed img {
+      position: absolute;
+      top: 0;
+      right: 0;         /* 右寄せ */
+      height: 100%;     /* 領域の高さにぴったり合わせる */
+      width: auto;      /* アスペクト比を維持しつつ幅は自動 */
+      display: block;
+      opacity: 0.15;
+    }
     header {
       background: #111;
       color: white;
       text-align: center;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
+      gap: 16px;
       padding: 16px 20px;
       position: fixed;
       top: 0;
@@ -34,15 +54,16 @@
     }
     header h1 {
       margin: 0;
-      font-size: 2rem;
+      font-size: 3rem;
       font-weight: 300;
-      letter-spacing: 0.1em;
+      font-family: 'Cherry Bomb One', cursive;
     }
     header p {
-      margin: 4px 0 0;
+      margin: 0;
       opacity: 0.8;
       font-size: 0.85rem;
       letter-spacing: 0.05em;
+      vertical-align: bottom;
     }
     .header-spacer {
       height: 80px;
@@ -58,10 +79,13 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      font-family: 'Cherry Bomb One', cursive;
+      font-size: 2.5rem;
+      color:#111;
     }
     h2 i {
       color: #111;
-      width: 30px;
+      width: 40px;
       text-align: center;
     }
     .card {
@@ -142,14 +166,17 @@
 </head>
 <body>
 
+<div class="bg-fixed">
+  <img src="shiranuka_logo.jpeg" alt="" />
+</div>
+
 <header>
-  <h1>しらぬか</h1>
-  <p>iOS / Flutter Developer</p>
+  <h1>Shiranuka</h1>
 </header>
 <div class="header-spacer"></div>
 
 <section>
-  <h2><i class="fas fa-user"></i>About</h2>
+  <h2><i class="fa-solid fa-paw"></i>About</h2>
   <div class="card">
     <p>
       Flutterを中心にモバイルアプリ開発を行っています。
@@ -159,7 +186,7 @@
 </section>
 
 <section>
-  <h2><i class="fas fa-briefcase"></i>Works</h2>
+  <h2><i class="fa-solid fa-paw"></i>Works</h2>
   <div class="works-container">
     <div class="card">
       <img class="card-image" src="sukisuki_screenshot.png" alt="数寄数寄 スクリーンショット" />
@@ -187,7 +214,7 @@
 </section>
 
 <section>
-  <h2><i class="fas fa-code"></i>Skills</h2>
+  <h2><i class="fa-solid fa-paw"></i>Skills</h2>
   <div class="card">
     <p>
       Flutter / Dart / Firebase / iOS / Git / Xcode
@@ -196,7 +223,7 @@
 </section>
 
 <section>
-  <h2><i class="fas fa-headset"></i>Support</h2>
+  <h2><i class="fa-solid fa-paw"></i>Support</h2>
   <div class="card">
     <p>
       アプリに関するお問い合わせは下記メールアドレスまでご連絡ください。<br><br>
