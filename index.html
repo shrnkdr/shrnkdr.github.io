@@ -22,16 +22,21 @@
       position: fixed;
       top: 90px;        /* ヘッダーの高さ分だけ下から開始 */
       right: 5%;
-      bottom: 10%;        /* ウインドウ下底に合わせる */
+      bottom: 10%;        /* ウインドウ下底に合わせる（PC用フォールバック） */
       left: 0;
       z-index: -1;
       overflow: hidden; /* はみ出しを完全に防ぐ */
+    }
+    /* スマホ用：高さをJS固定値で上書き */
+    .bg-fixed.fixed-size {
+      bottom: auto;
+      height: var(--bg-fixed-height, auto);
     }
     .bg-fixed img {
       position: absolute;
       top: 0;
       right: 0;         /* 右寄せ */
-      height: var(--bg-height, 100%); /* JS で固定値を注入、フォールバックは100% */
+      height: 100%;
       width: auto;      /* アスペクト比を維持しつつ幅は自動 */
       display: block;
       opacity: 0.15;
