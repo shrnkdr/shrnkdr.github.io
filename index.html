@@ -6,6 +6,7 @@
   <title>Shiranuka Portfolio</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap" />
+  <link rel="icon" href="shiranuka_favicon.ico">
   <style>
     * {
       box-sizing: border-box;
@@ -30,7 +31,7 @@
       position: absolute;
       top: 0;
       right: 0;         /* 右寄せ */
-      height: 100%;     /* 領域の高さにぴったり合わせる */
+      height: var(--bg-height, 100%); /* JS で固定値を注入、フォールバックは100% */
       width: auto;      /* アスペクト比を維持しつつ幅は自動 */
       display: block;
       opacity: 0.15;
@@ -234,7 +235,7 @@
 </section>
 
 <footer>
-  © 2026 しらぬか. All rights reserved.
+  © 2026 Shiranuka. All rights reserved.
 </footer>
 
 </body>
