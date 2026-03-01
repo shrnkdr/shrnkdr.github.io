@@ -95,8 +95,8 @@
       margin-top: 20px;
     }
     .works-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 20px;
     }
     .works-container .card {
@@ -106,18 +106,13 @@
       padding: 0;
       overflow: hidden;
       display: flex;
-      flex-direction: column;
-    }
-    /* カード全体の高さを幅基準で決定する
-       画像が 16/9 の比率 → カード全体はその2倍の高さ
-       カード幅を w とすると 画像高さ = w * 9/16、カード高さ = w * 9/8
-       aspect-ratio で表現: 16 / (9*2) = 16/18 = 8/9 */
-    .works-container .card {
-      aspect-ratio: 8 / 9;
+      flex-direction: row;
+      aspect-ratio: 16 / 5;
+      container-type: inline-size;
     }
     .works-container .card .card-image {
-      width: 100%;
-      aspect-ratio: 16 / 9;
+      width: 50%;
+      height: 100%;
       object-fit: cover;
       display: block;
       background-color: #e0e0e0;
@@ -133,19 +128,22 @@
     }
     .works-container .card .card-body h3 {
       margin: 0 0 0.4em;
-      font-size: clamp(0.95rem, 5.4cqw, 1.4rem);
+      font-size: clamp(0.95rem, 2.5cqw, 1.4rem);
     }
     .works-container .card .card-body p {
       margin: 0;
-      font-size: clamp(0.7rem, 4cqw, 1.1rem);
+      font-size: clamp(0.7rem, 1.8cqw, 1.1rem);
       line-height: 1.6;
     }
     @media (max-width: 480px) {
-      .works-container {
-        grid-template-columns: 1fr;
-      }
       .works-container .card {
+        flex-direction: column;
         aspect-ratio: 8 / 9;
+      }
+      .works-container .card .card-image {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
       }
     }
     .works-container .card {
@@ -169,9 +167,112 @@
       color: #007aff;
       text-decoration: none;
     }
+
+    /* ===== ローディング画面 ===== */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      background: #111;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease;
+    }
+    #loading-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .loading-title {
+      font-family: 'Cherry Bomb One', cursive;
+      font-size: clamp(3rem, 10vw, 8rem);
+      color: white;
+      margin: 0;
+      display: flex;
+    }
+
+    /* 各文字のspan */
+    .loading-title span {
+      display: inline-block;
+      position: relative;
+      color: white;
+      overflow: hidden;
+    }
+
+    /*
+      アニメーション可能なカスタムプロパティ登録
+      --cb : color の bottom clip （下から上へ色が入る）
+      --wt : white の top clip    （上から下へ白が戻る）
+    */
+    @property --cb {
+      syntax: '<percentage>';
+      inherits: false;
+      initial-value: 100%;
+    }
+    @property --wt {
+      syntax: '<percentage>';
+      inherits: false;
+      initial-value: 100%;
+    }
+
+    /* ::before — 色付きレイヤー（下から上へ）
+       top inset 100%→0% : 上端のクリップが縮まる → 下から上に色が現れる */
+    .loading-title span::before {
+      content: attr(data-char);
+      position: absolute;
+      inset: 0;
+      color: var(--char-color);
+      clip-path: inset(var(--cb) 0% 0% 0%);
+    }
+
+    /* ::after — 白復帰レイヤー（上から下へ）
+       bottom inset 100%→0% : 下端のクリップが縮まる → 上から下に白が戻る */
+    .loading-title span::after {
+      content: attr(data-char);
+      position: absolute;
+      inset: 0;
+      color: white;
+      clip-path: inset(0% 0% var(--wt) 0%);
+    }
+
+    /*
+      1サイクル = 4000ms
+        0%   (   0ms) : 色なし（cb=100%）
+        30%  (1200ms) : 色が全体に（cb=0%）　 ← ease-in で上ほど遅く
+        37.5%(1500ms) : 白レイヤー開始（wt=100% → まだ非表示）
+        62.5%(2500ms) : 白が全体に（wt=0%）   ← ease-out
+        99%  (3960ms) : 両レイヤーリセット準備
+        100% (4000ms) : 瞬時にリセット
+    */
+    @keyframes color-fill {
+      0%   { --cb: 100%; animation-timing-function: ease-in;  }
+      30%  { --cb: 0%;   animation-timing-function: linear;   }
+      98%  { --cb: 0%;   animation-timing-function: step-end; }
+      100% { --cb: 100%; }
+    }
+    @keyframes white-restore {
+      0%    { --wt: 100%; }
+      37.5% { --wt: 100%; animation-timing-function: ease-out; }
+      62.5% { --wt: 0%;   animation-timing-function: linear;   }
+      98%   { --wt: 0%;   animation-timing-function: step-end; }
+      100%  { --wt: 100%; }
+    }
+
+    /* animate クラスが付いたらアニメーション開始・無限ループ */
+    #loading-screen.animate .loading-title span::before {
+      animation: color-fill 4000ms infinite;
+    }
+    #loading-screen.animate .loading-title span::after {
+      animation: white-restore 4000ms infinite;
+    }
   </style>
 </head>
 <body>
+
+<!-- ローディング画面 -->
+<div id="loading-screen">
+  <p class="loading-title" id="loading-title-text"></p>
+</div>
 
 <div class="bg-fixed">
   <img src="shiranuka_logo.jpeg" alt="" />
@@ -203,6 +304,18 @@
       <p>
         CPUが入力したパスコードを解読するゲーム。<br>
         App Storeにて公開中。
+      </p>
+    </div>
+    </div>
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=com.rps.jp&pcampaignid=web_share">
+    <div class="card">
+      <img class="card-image" src="rps_header.png" alt="あとだしジャンケン スクリーンショット" />
+      <div class="card-body">
+      <h3>あとだしジャンケン ～負けるが勝ち～</h3>
+      <p>
+        CPUが入力したパスコードを解読するゲーム。<br>
+        Google Playにて公開中。
       </p>
     </div>
     </div>
@@ -244,6 +357,79 @@
 <footer>
   © 2026 Shiranuka. All rights reserved.
 </footer>
+
+<script>
+  (function () {
+  var loader   = document.getElementById('loading-screen');
+  var titleEl  = document.getElementById('loading-title-text');
+  var MIN_DISPLAY = 2500;
+
+  /* ---- アニメーション設定 ---- */
+  var TEXT    = 'Shiranuka';
+  var COLORS  = ['#FF4E4E','#FF9F1C','#FFE033','#5DD45D','#3ECFCF','#4A90D9','#A259FF','#FF6EC7','#FF7043'];
+  var CYCLE   = 4000;   // 1サイクル (ms)
+  var STAGGER = 110;    // 文字ごとのずれ (ms)
+
+  /* span を生成 */
+  TEXT.split('').forEach(function (ch, i) {
+    var span = document.createElement('span');
+    span.textContent  = ch;
+    span.dataset.char = ch;
+    span.style.setProperty('--char-color', COLORS[i]);
+    titleEl.appendChild(span);
+  });
+
+  /* 文字ごとの animation-delay を注入
+     ループでも波が続くよう正のdelayを設定 */
+  var styleTag = document.createElement('style');
+  styleTag.textContent = TEXT.split('').map(function (_, i) {
+    var d = i * STAGGER;
+    return (
+      '#loading-screen.animate .loading-title span:nth-child(' + (i+1) + ')::before,' +
+      '#loading-screen.animate .loading-title span:nth-child(' + (i+1) + ')::after {' +
+        'animation-delay:' + d + 'ms;' +
+      '}'
+    );
+  }).join('\n');
+  document.head.appendChild(styleTag);
+
+  /* アニメーション開始 */
+  requestAnimationFrame(function () {
+    loader.classList.add('animate');
+  });
+
+  /* ---- ローダー非表示処理 ---- */
+  var startTime = Date.now();
+
+    function hideLoader() {
+    var elapsed   = Date.now() - startTime;
+    var remaining = Math.max(0, MIN_DISPLAY - elapsed);
+      setTimeout(function () {
+        loader.classList.add('fade-out');
+        loader.addEventListener('transitionend', function () {
+          loader.remove();
+        }, { once: true });
+      }, remaining);
+    }
+
+  /* ---- 画像読み込み監視 ---- */
+  var images = Array.from(document.images);
+  if (images.length === 0) { hideLoader(); return; }
+
+  var loaded = 0;
+    function onLoad() {
+      loaded++;
+      if (loaded >= images.length) hideLoader();
+    }
+    images.forEach(function (img) {
+    if (img.complete) { onLoad(); }
+    else {
+      img.addEventListener('load',  onLoad);
+      img.addEventListener('error', onLoad);
+      }
+    });
+  })();
+</script>
 
 </body>
 </html>
