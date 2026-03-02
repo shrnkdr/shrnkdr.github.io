@@ -153,9 +153,38 @@
       color: inherit;
       text-decoration: none;
     }
-    .works-container a:hover .card {
+    .works-container .card:hover {
       transform: translateY(-4px);
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    /* ストアバッジ */
+    .store-buttons {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+      gap: 4px;
+      margin-top: 12px;
+      align-items: center;
+    }
+    .store-btn {
+      display: inline-block;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .store-btn:hover {
+      opacity: 0.85;
+      transform: scale(1.04);
+    }
+    .store-btn.appstore img {
+      display: block;
+      height: clamp(34px, 5.0cqw, 52px);
+      width: auto;
+    }
+    /* Google Playバッジは余白が大きいため、見た目の高さをApp Storeに合わせて調整 */
+    .store-btn.googleplay img {
+      display: block;
+      height: clamp(44px, 6.6cqw, 71px);
+      width: auto;
     }
     footer {
       text-align: center;
@@ -265,6 +294,20 @@
     #loading-screen.animate .loading-title span::after {
       animation: white-restore 4000ms infinite;
     }
+
+    /* ぷるんアニメーション（1回だけ） */
+    @keyframes purun {
+      0%   { transform: scale(1.0, 1.0) translate(0%, 0%); }
+      15%  { transform: scale(0.9, 0.9) translate(0%, 5%); }
+      30%  { transform: scale(1.3, 0.8) translate(0%, 10%); }
+      50%  { transform: scale(0.8, 1.3) translate(0%, -10%); }
+      70%  { transform: scale(1.1, 0.9) translate(0%, 5%); }
+      100% { transform: scale(1.0, 1.0) translate(0%, 0%); }
+    }
+    #loading-screen.animate .loading-title span {
+      animation: purun 0.6s linear forwards;
+      animation-iteration-count: 1;
+    }
   </style>
 </head>
 <body>
@@ -296,42 +339,55 @@
 <section>
   <h2><i class="fa-solid fa-paw"></i>Works</h2>
   <div class="works-container">
-    <a href="https://apps.apple.com/jp/app/%E6%95%B0%E5%AF%84%E6%95%B0%E5%AF%84/id6758905100#information">
     <div class="card">
       <img class="card-image" src="sukisuki_screenshot.png" alt="数寄数寄 スクリーンショット" />
       <div class="card-body">
       <h3>数寄数寄</h3>
-      <p>
-        CPUが入力したパスコードを解読するゲーム。<br>
-        App Storeにて公開中。
-      </p>
+        <p>CPUが入力したパスコードを解読するゲーム。</p>
+        <div class="store-buttons">
+          <a class="store-btn appstore" href="https://apps.apple.com/jp/app/%E6%95%B0%E5%AF%84%E6%95%B0%E5%AF%84/id6758905100#information" target="_blank" rel="noopener">
+            <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/ja-jp?size=250x83" alt="Download on the App Store" />
+          </a>
+          <!-- Google Playリリース時は下のコメントを解除してURLを設定 -->
+          <!-- <a class="store-btn googleplay" href="https://play.google.com/store/apps/details?id=..." target="_blank" rel="noopener">
+            <img src="https://play.google.com/intl/en_us/badges/images/generic/ja_badge_web_generic.png" alt="Google Play で手に入れよう" />
+          </a> -->
+        </div>
     </div>
     </div>
-    </a>
-    <a href="https://play.google.com/store/apps/details?id=com.rps.jp&pcampaignid=web_share">
+
     <div class="card">
       <img class="card-image" src="rps_header.png" alt="あとだしジャンケン スクリーンショット" />
       <div class="card-body">
-      <h3>あとだしジャンケン ～負けるが勝ち～</h3>
-      <p>
-        CPUが入力したパスコードを解読するゲーム。<br>
-        Google Playにて公開中。
-      </p>
+      <h3>あとだしジャンケン</h3>
+        <p>後出しで相手に負ける手を出し続けるゲーム。</p>
+        <div class="store-buttons">
+          <!-- App Storeリリース時は下のコメントを解除してURLを設定 -->
+          <!-- <a class="store-btn appstore" href="https://apps.apple.com/..." target="_blank" rel="noopener">
+            <i class="fa-brands fa-apple"></i>App Store
+          </a> -->
+          <a class="store-btn googleplay" href="https://play.google.com/store/apps/details?id=com.rps.jp&pcampaignid=web_share" target="_blank" rel="noopener">
+            <img src="https://play.google.com/intl/en_us/badges/images/generic/ja_badge_web_generic.png" alt="Google Play で手に入れよう" />
+          </a>
+        </div>
     </div>
     </div>
-    </a>
-    <a href="https://apps.apple.com/jp/app/%E3%83%8B%E3%83%B3%E3%83%8B%E3%82%AF%E5%85%A5%E3%82%8C%E3%82%8B%E3%82%93%E3%81%8B/id6749322877">
+
     <div class="card">
       <img class="card-image" src="ninniku_screenshot.png" alt="ニンニク入れるんか？ スクリーンショット" />
       <div class="card-body">
       <h3>ニンニク入れるんか？</h3>
-      <p>
-        ラーメン二郎のコールを生成するiOSアプリ。<br>
-        App Storeにて公開中。
-      </p>
+        <p>ラーメン二郎のコールを生成するアプリ。</p>
+        <div class="store-buttons">
+          <a class="store-btn appstore" href="https://apps.apple.com/jp/app/%E3%83%8B%E3%83%B3%E3%83%8B%E3%82%AF%E5%85%A5%E3%82%8C%E3%82%8B%E3%82%93%E3%81%8B/id6749322877" target="_blank" rel="noopener">
+            <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/ja-jp?size=250x83" alt="Download on the App Store" />
+          </a>
+          <a class="store-btn googleplay" href="#" target="_blank" rel="noopener">
+            <img src="https://play.google.com/intl/en_us/badges/images/generic/ja_badge_web_generic.png" alt="Google Play で手に入れよう" />
+          </a>
+        </div>
     </div>
     </div>
-    </a>
   </div>
 </section>
 
@@ -358,7 +414,7 @@
   © 2026 Shiranuka. All rights reserved.
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   (function () {
   var loader   = document.getElementById('loading-screen');
   var titleEl  = document.getElementById('loading-title-text');
@@ -387,6 +443,9 @@
     return (
       '#loading-screen.animate .loading-title span:nth-child(' + (i+1) + ')::before,' +
       '#loading-screen.animate .loading-title span:nth-child(' + (i+1) + ')::after {' +
+        'animation-delay:' + d + 'ms;' +
+      '}' +
+      '#loading-screen.animate .loading-title span:nth-child(' + (i+1) + ') {' +
         'animation-delay:' + d + 'ms;' +
       '}'
     );
